@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  product-service:
+    platform: linux/x86_64
+    build: spring-cloud-open-telemetry1/
+    ports:
+      - "8080:8080"
+
+  price-service:
+    platform: linux/x86_64
+    build: spring-cloud-open-telemetry2/
+    ports:
+      - "8081"
+
+  jaeger-service:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"
+      - "14250:14250"
+      - "14268:14268"
+      - "4317"            # OTLP gRPC default port
+

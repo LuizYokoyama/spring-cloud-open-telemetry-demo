@@ -1,0 +1,6 @@
+/home/luiz/dev/spring-cloud-open-telemetry/spring-cloud-open-telemetry2/src/main/java/com/baeldung/opentelemetry/model/Price.java
+/home/luiz/dev/spring-cloud-open-telemetry/spring-cloud-open-telemetry2/src/main/java/com/baeldung/opentelemetry/exception/PriceNotFoundException.java
+/home/luiz/dev/spring-cloud-open-telemetry/spring-cloud-open-telemetry2/src/main/java/com/baeldung/opentelemetry/PriceApplication.java
+/home/luiz/dev/spring-cloud-open-telemetry/spring-cloud-open-telemetry2/src/main/java/com/baeldung/opentelemetry/exception/ProductControllerAdvice.java
+/home/luiz/dev/spring-cloud-open-telemetry/spring-cloud-open-telemetry2/src/main/java/com/baeldung/opentelemetry/repository/PriceRepository.java
+/home/luiz/dev/spring-cloud-open-telemetry/spring-cloud-open-telemetry2/src/main/java/com/baeldung/opentelemetry/controller/PriceController.java
