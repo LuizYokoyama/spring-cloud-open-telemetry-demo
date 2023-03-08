@@ -10,5 +10,7 @@ EXPOSE 8081
 
 ENV OTEL_TRACES_EXPORTER=jaeger
 ENV OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger-service:14250
+ENV OTEL_METRICS_EXPORTER=prometheus
+ENV OTEL_EXPORTER_PROMETHEUS_PORT=9465
 
 ENTRYPOINT ["java", "-javaagent:/usr/share/otel/opentelemetry-javaagent.jar","-jar","/spring-cloud-open-telemetry.jar"]
