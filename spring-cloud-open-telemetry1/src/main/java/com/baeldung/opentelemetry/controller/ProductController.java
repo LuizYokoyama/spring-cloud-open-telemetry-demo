@@ -3,6 +3,11 @@ package com.baeldung.opentelemetry.controller;
 import com.baeldung.opentelemetry.api.client.PriceClient;
 import com.baeldung.opentelemetry.model.Product;
 import com.baeldung.opentelemetry.repository.ProductRepository;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,11 @@ public class ProductController {
 
     private final ProductRepository productRepository;
 
+    private final Tracer tracer = GlobalOpenTelemetry
+            .getTracerProvider()
+            .tracerBuilder("my-custom-tracer")
+            .build();
+
     @Autowired
     public ProductController(PriceClient priceClient, ProductRepository productRepository) {
         this.priceClient = priceClient;
@@ -27,10 +37,30 @@ public class ProductController {
 
     @GetMapping(path = "/product/{id}")
     public Product getProductDetails(@PathVariable("id") long productId){
-        LOGGER.info("Getting Product and Price Details With Product Id {}", productId);
-        Product product = productRepository.getProduct(productId);
-        product.setPrice(priceClient.getPrice(productId));
 
-        return product;
+        Span span = tracer
+                .spanBuilder("my-span") //TODO Replace with the name of your span
+                .setAttribute("my-key-1", "my-value-1") //TODO Add initial attributes
+                .startSpan();
+
+        try (Scope scope = span.makeCurrent()) {
+            span.setAttribute("key-2", "value-2"); //TODO Add extra attributes if necessary
+
+            //TODO your code Endpoint goes here
+
+            LOGGER.info("Getting Product and Price Details With Product Id {}", productId);
+            Product product = productRepository.getProduct(productId);
+            product.setPrice(priceClient.getPrice(productId));
+
+            return product;
+
+        } catch (Throwable throwable) {
+            span.setStatus(StatusCode.ERROR, "Something bad happened!");
+            span.recordException(throwable);
+        } finally {
+            span.end();
+        }
+
+
     }
 }
