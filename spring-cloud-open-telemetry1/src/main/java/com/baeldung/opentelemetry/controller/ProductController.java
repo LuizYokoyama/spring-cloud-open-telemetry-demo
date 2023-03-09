@@ -37,7 +37,7 @@ public class ProductController {
 
     @GetMapping(path = "/product/{id}")
     public Product getProductDetails(@PathVariable("id") long productId){
-
+        Product product = null;
         Span span = tracer
                 .spanBuilder("my-span") //TODO Replace with the name of your span
                 .setAttribute("my-key-1", "my-value-1") //TODO Add initial attributes
@@ -49,18 +49,19 @@ public class ProductController {
             //TODO your code Endpoint goes here
 
             LOGGER.info("Getting Product and Price Details With Product Id {}", productId);
-            Product product = productRepository.getProduct(productId);
+            product = productRepository.getProduct(productId);
             product.setPrice(priceClient.getPrice(productId));
 
-            return product;
+
 
         } catch (Throwable throwable) {
             span.setStatus(StatusCode.ERROR, "Something bad happened!");
             span.recordException(throwable);
         } finally {
             span.end();
-        }
 
+        }
+        return product;
 
     }
 }

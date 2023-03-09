@@ -52,6 +52,7 @@ public class PriceController {
             span.recordException(throwable);
         } finally {
             span.end();
+            return null;
         }
 
 
