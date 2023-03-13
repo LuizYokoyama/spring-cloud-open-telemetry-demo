@@ -52,16 +52,13 @@ public class ProductController {
             product = productRepository.getProduct(productId);
             product.setPrice(priceClient.getPrice(productId));
 
-
-
         } catch (Throwable throwable) {
             span.setStatus(StatusCode.ERROR, "Something bad happened!");
             span.recordException(throwable);
         } finally {
             span.end();
-
+            return product;
         }
-        return product;
 
     }
 }
